@@ -12,6 +12,6 @@ node[:deploy].each do |application, deploy|
     block do
       true
     end
-    notifies :run, resources(:bash => 'restart sidekiq'), :delayed
+    notifies :run, 'bash[restart sidekiq]', :delayed
   end
 end
