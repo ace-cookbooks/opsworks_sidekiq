@@ -3,6 +3,14 @@
 # Recipe:: default
 #
 node[:deploy].each do |application, deploy|
+  execute 'bundle binstubs sidekiq' do
+    user deploy[:user]
+    group deploy[:group]
+    environment(deploy[:environment])
+    cwd deploy[:current_path]
+    command "#{deploy[:bundle_binary]} binstubs sidekiq"
+  end
+
   pid_file = File.join(deploy[:deploy_to], 'shared', 'pids', 'sidekiq.pid')
   god_monitor 'sidekiq' do
     template_cookbook 'god'
