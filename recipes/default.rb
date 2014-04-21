@@ -8,7 +8,7 @@ node[:deploy].each do |application, deploy|
     group deploy[:group]
     environment(deploy[:environment])
     cwd deploy[:current_path]
-    command "#{deploy[:bundle_binary]} binstubs sidekiq"
+    command "#{deploy[:bundler_binary]} binstubs sidekiq"
   end
 
   pid_file = File.join(deploy[:deploy_to], 'shared', 'pids', 'sidekiq.pid')
