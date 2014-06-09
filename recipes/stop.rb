@@ -1,10 +1,8 @@
 node[:deploy].each do |application, deploy|
-  bash 'stop sidekiq' do
-    code <<-EOH
-    sleep 1
-    /usr/local/bin/god stop workers
-    EOH
-    user 'root'
-    action :run
+  ruby_block 'stop sidekiq' do
+    block do
+      true
+    end
+    notifies :stop, 'eye_service[sidekiq]', :immediately
   end
 end
