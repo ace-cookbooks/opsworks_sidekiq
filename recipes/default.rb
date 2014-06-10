@@ -18,7 +18,8 @@ node[:deploy].each do |application, deploy|
       env: deploy[:environment],
       dir: deploy[:current_path],
       uid: deploy[:user],
-      gid: deploy[:group]
+      gid: deploy[:group],
+      rails_env: deploy[:rails_env]
     })
   end
 
