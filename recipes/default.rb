@@ -23,19 +23,11 @@ node[:deploy].each do |application, deploy|
     })
   end
 
-  ruby_block 'ensure sidekiq started' do
+  ruby_block 'restart sidekiq on deploy' do
     block do
       true
     end
-    notifies :start, 'eye_service[sidekiq]', :immediately
-  end
-
-  # Opsworks specific hack
-  # Setting a node attribute to disable the restart recipe that will be run as part of the deploy.
-  # On opsworks this only sticks for the current chef run.
-  ruby_block 'block sidekiq restart' do
-    block do
-      node.set['opsworks_sidekiq']['disable_restart'] = true
-    end
+    notifies :restart, 'eye_service[sidekiq]', :delayed
+    not_if { node[:opswors][:activity] == 'setup' }
   end
 end
