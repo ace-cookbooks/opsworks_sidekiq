@@ -28,6 +28,6 @@ node[:deploy].each do |application, deploy|
       true
     end
     notifies :restart, 'eye_service[sidekiq]', :delayed
-    not_if { node[:opswors][:activity] == 'setup' }
+    not_if { node[:opsworks][:activity] == 'setup' }
   end
 end
