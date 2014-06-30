@@ -1,5 +1,6 @@
-service_list = [resources('eye_service[sidekiq]')].flatten
-if service_list.size != 1
+begin
+  resources('eye_service[sidekiq]')
+rescue Chef::Exceptions::ResourceNotFound
   eye_service 'sidekiq' do
     supports [:start, :stop, :safe_stop, :restart, :safe_restart, :enable, :load]
     user_srv_uid 'root'
