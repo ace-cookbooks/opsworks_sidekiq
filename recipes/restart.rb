@@ -1,4 +1,6 @@
 node[:deploy].each do |application, deploy|
+  include_recipe 'opsworks_sidekiq::service'
+
   ruby_block 'restart sidekiq later' do
     block do
       true
