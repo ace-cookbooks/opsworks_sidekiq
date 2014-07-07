@@ -3,6 +3,9 @@
 require File.join(File.dirname(__FILE__), "config.rb")
 
 Eye.application 'sidekiq' do
+  <% if node['eye']['notify'] -%>
+  notify <%= node['eye']['notify'] %>
+  <% end -%>
   <% @env ||= {} -%>
   env(<%= @env %>)
   working_dir '<%= @dir %>'
