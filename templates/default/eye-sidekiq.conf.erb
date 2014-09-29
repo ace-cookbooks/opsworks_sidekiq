@@ -22,10 +22,13 @@ Eye.application 'sidekiq' do
   uid '<%= @uid %>'
   gid '<%= @gid %>'
 
-  process 'sidekiq' do
-    pid_file 'tmp/pids/sidekiq.pid'
-    start_command '<%= @dir %>/bin/sidekiq -C config/sidekiq.yml -e <%= @rails_env %>'
-    daemonize true
-    start_timeout 20.seconds
+  num_processes = 2
+  num_processes.times do |i|
+    process "sidekiq-#{i}" do
+      pid_file "tmp/pids/sidekiq-#{i}.pid"
+      start_command "<%= @dir %>/bin/sidekiq -C config/sidekiq.yml -e <%= @rails_env %> -i #{i}"
+      daemonize true
+      start_timeout 20.seconds
+    end
   end
 end
