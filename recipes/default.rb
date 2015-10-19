@@ -30,4 +30,13 @@ node[:deploy].each do |application, deploy|
     notifies :restart, 'eye_service[sidekiq]', :delayed
     not_if { node[:opsworks][:activity] == 'setup' }
   end
+
+  execute 'move sidekiq config into place' do
+    user deploy[:user]
+    group deploy[:group]
+    environment(deploy[:environment])
+    cwd deploy[:current_path]
+    command 'cp -f config/sidekiq.fulfillment.yml config/sidekiq.yml'
+    only_if { node[:opsworks][:instance][:layers].include? 'fulfillment' }
+  end
 end
