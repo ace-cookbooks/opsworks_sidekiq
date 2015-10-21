@@ -37,6 +37,6 @@ node[:deploy].each do |application, deploy|
     environment(deploy[:environment])
     cwd deploy[:current_path]
     command 'cp -f config/sidekiq.fulfillment.yml config/sidekiq.yml'
-    only_if { node[:opsworks][:instance][:layers].include? 'fulfillment' }
+    only_if { node[:opsworks][:activity] != 'setup' && node[:opsworks][:instance][:layers].include?('fulfillment') }
   end
 end
